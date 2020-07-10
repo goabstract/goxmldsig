@@ -349,6 +349,17 @@ func (ctx *ValidationContext) findSignature(el *etree.Element) (*types.Signature
 					// this behavior we can drop this, as well as the adding and
 					// removing of elements below.
 					canonicalSignedInfo = detachedSignedInfo
+				case CanonicalXML10ExclusiveCommentAlgorithmId:
+					err := etreeutils.TransformExcC14n(detachedSignedInfo, "")
+                                        if err != nil {
+                                                return err
+                                        }
+
+                                        // NOTE: TransformExcC14n transforms the element in-place,
+                                        // while canonicalPrep isn't meant to. Once we standardize
+                                        // this behavior we can drop this, as well as the adding and
+                                        // removing of elements below.
+                                        canonicalSignedInfo = detachedSignedInfo
 
 				case CanonicalXML11AlgorithmId:
 					canonicalSignedInfo = canonicalPrep(detachedSignedInfo, map[string]struct{}{})
